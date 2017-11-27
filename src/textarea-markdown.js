@@ -1,5 +1,5 @@
 import 'whatwg-fetch'
-import marked from 'marked'
+import MarkdownIt from 'markdown-it'
 
 export default class TextareaMarkdown {
   constructor(textarea, options = {}) {
@@ -58,7 +58,13 @@ export default class TextareaMarkdown {
   applyPreview() {
     if (this.previews) {
       this.previews.forEach((preview) => {
-        preview.innerHTML = marked(this.textarea.value, { breaks: true });
+        let md = new MarkdownIt({
+          html: true,
+          breaks: true,
+          langPrefix: true,
+          linkify: true
+        });
+        preview.innerHTML =  md.render(this.textarea.value);
       })
     }
   }

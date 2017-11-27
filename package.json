@@ -1,6 +1,6 @@
 {
   "name": "textarea-markdown",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Make textarea a markdown editor.",
   "main": "lib/textarea-markdown.js",
   "scripts": {
@@ -15,7 +15,7 @@
   "author": "Masaki Komagata",
   "license": "ISC",
   "dependencies": {
-    "marked": "^0.3.6",
+    "markdown-it": "^8.4.0",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
