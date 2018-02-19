@@ -1,5 +1,6 @@
 import 'whatwg-fetch'
 import MarkdownIt from 'markdown-it'
+import MarkdownItPlantUML from 'markdown-it-plantuml'
 
 export default class TextareaMarkdown {
   constructor(textarea, options = {}) {
@@ -64,6 +65,7 @@ export default class TextareaMarkdown {
           langPrefix: true,
           linkify: true
         });
+        md.use(MarkdownItPlantUML);
         preview.innerHTML =  md.render(this.textarea.value);
       })
     }
