@@ -25,3 +25,26 @@ let textarea = document.querySelector("textarea");
 new TextareaMarkdown(textarea);
 ```
 
+with rails.
+
+```html
+<textarea id="editor" data-preview="#preview"></textarea>
+<div id="preview"></div>
+```
+
+```javascript
+import TextareaMarkdown from 'textarea-markdown'
+
+document.addEventListener('DOMContentLoaded', () => {
+  const token = document.querySelector("meta[name=\"csrf-token\"]").content;
+  const textarea = document.querySelector('#editor');
+
+  new TextareaMarkdown(textarea, {
+    endPoint: '/api/image.json',
+    paramName: 'file',
+    responseKey: 'url',
+    csrfToken: token,
+    placeholder: 'uploading %filename ...'
+  })
+});
+```

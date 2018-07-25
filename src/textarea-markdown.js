@@ -23,6 +23,7 @@ export default class TextareaMarkdown {
     const selector = this.textarea.getAttribute('data-preview');
     if (selector) {
       Array.from(document.querySelectorAll(selector), e => this.previews.push(e))
+      this.applyPreview();
     }
   }
 
