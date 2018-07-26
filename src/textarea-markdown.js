@@ -1,6 +1,5 @@
 import 'whatwg-fetch'
 import MarkdownIt from 'markdown-it'
-import MarkdownItPlantUML from 'markdown-it-plantuml'
 
 export default class TextareaMarkdown {
   constructor(textarea, options = {}) {
@@ -14,6 +13,7 @@ export default class TextareaMarkdown {
     }, options)
     this.previews = [];
     this.setPreview();
+    this.applyPreview();
     textarea.addEventListener("drop", e => this.drop(e));
     textarea.addEventListener("paste", e => this.paste(e));
     textarea.addEventListener("keyup", e => this.keyup(e));
@@ -23,7 +23,6 @@ export default class TextareaMarkdown {
     const selector = this.textarea.getAttribute('data-preview');
     if (selector) {
       Array.from(document.querySelectorAll(selector), e => this.previews.push(e))
-      this.applyPreview();
     }
   }
 
@@ -66,7 +65,6 @@ export default class TextareaMarkdown {
           langPrefix: true,
           linkify: true
         });
-        md.use(MarkdownItPlantUML);
         preview.innerHTML =  md.render(this.textarea.value);
       })
     }
