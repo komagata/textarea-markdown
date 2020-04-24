@@ -62,7 +62,7 @@ export default class TextareaMarkdown {
         let md = new MarkdownIt({
           html: true,
           breaks: true,
-          langPrefix: true,
+          langPrefix: 'language-',
           linkify: true
         });
         preview.innerHTML =  md.render(this.textarea.value);
