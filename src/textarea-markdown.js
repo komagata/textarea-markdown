@@ -10,7 +10,13 @@ export default class TextareaMarkdown {
       responseKey: 'url',
       csrfToken: null,
       placeholder: 'uploading %filename ...',
-      plugins: []
+      plugins: [],
+      markdownOptions: Object.assign({
+        html: true,
+        breaks: true,
+        langPrefix: 'language-',
+        linkify: true
+      })
     }, options)
     this.previews = [];
     this.setPreview();
@@ -58,16 +64,11 @@ export default class TextareaMarkdown {
   }
 
   applyPreview() {
+    const markdownOptions = this.options['markdownOptions']
     const plugins = this.options['plugins']
     if (this.previews) {
       this.previews.forEach((preview) => {
-        let md = new MarkdownIt({
-          html: true,
-          breaks: true,
-          langPrefix: 'language-',
-          linkify: true
-        });
-
+        let md = new MarkdownIt(markdownOptions);
         plugins.forEach((plugin) => md.use(plugin))
         preview.innerHTML =  md.render(this.textarea.value);
       })
