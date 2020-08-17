@@ -10,6 +10,7 @@ export default class TextareaMarkdown {
       responseKey: 'url',
       csrfToken: null,
       placeholder: 'uploading %filename ...',
+      afterPreview: () => {},
       plugins: [],
       markdownOptions: Object.assign({
         html: true,
@@ -73,6 +74,8 @@ export default class TextareaMarkdown {
         preview.innerHTML =  md.render(this.textarea.value);
       })
     }
+
+    this.options['afterPreview']()
   }
 
   uploadToOriginal(file) {
