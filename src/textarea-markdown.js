@@ -5,6 +5,7 @@ export default class TextareaMarkdown {
   constructor(textarea, options = {}) {
     this.textarea = textarea;
     this.options = Object.assign({
+      useUploader: true,
       endPoint: '/api/image.json',
       paramName: 'file',
       responseKey: 'url',
@@ -22,7 +23,9 @@ export default class TextareaMarkdown {
     this.previews = [];
     this.setPreview();
     this.applyPreview();
-    textarea.addEventListener("drop", e => this.drop(e));
+    if(this.options.useUploader) {
+      textarea.addEventListener("drop", e => this.drop(e));
+    }
     textarea.addEventListener("paste", e => this.paste(e));
     textarea.addEventListener("keyup", e => this.keyup(e));
   }

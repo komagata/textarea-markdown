@@ -48,3 +48,11 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 });
 ```
+
+### Options
+
+#### useUploader
+- type: Boolean
+- default: true
+
+Enable uploading files on drop when the value is set to true
