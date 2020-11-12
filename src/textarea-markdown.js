@@ -122,6 +122,7 @@ export default class TextareaMarkdown {
         this.textarea.value = this.textarea.value.replace(text, `![${file.name}](${url})\n`);
         this.applyPreview();
       }).catch((error) => {
+        this.textarea.value = this.textarea.value.replace(text, '');
         console.warn('parsing failed', error)
       })
     };
