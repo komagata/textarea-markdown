@@ -24,6 +24,7 @@ export default class TextareaMarkdown {
     this.setPreview();
     this.applyPreview();
     if(this.options.useUploader) {
+      textarea.addEventListener("dragover", e => e.preventDefault());
       textarea.addEventListener("drop", e => this.drop(e));
     }
     textarea.addEventListener("paste", e => this.paste(e));
