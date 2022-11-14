@@ -1,5 +1,7 @@
 import 'whatwg-fetch'
 import MarkdownIt from 'markdown-it'
+import { filetypeextension } from 'magic-bytes.js'
+import { filesize } from "filesize"
 
 export default class TextareaMarkdown {
   constructor(textarea, options = {}) {
@@ -11,6 +13,7 @@ export default class TextareaMarkdown {
       responseKey: 'url',
       csrfToken: null,
       placeholder: 'uploading %filename ...',
+      imageableExtensions: ['jpeg', 'png', 'gif'],
       afterPreview: () => {},
       plugins: [],
       markdownOptions: Object.assign({
@@ -92,8 +95,11 @@ export default class TextareaMarkdown {
 
   upload(file) {
     const reader = new FileReader();
-    reader.readAsText(file);
+    reader.readAsArrayBuffer(file);
     reader.onload = (event) => {
+      const bytes = new Uint8Array(reader.result);
+      const fileType = filetypeextension(bytes)[0];
+      const fileSize = filesize(file.size, {base: 10, standard: "jedec"});
       const text = '![' + this.options['placeholder'].replace(/\%filename/, file.name) + ']()';
 
       const beforeRange = this.textarea.selectionStart;
@@ -120,7 +126,11 @@ export default class TextareaMarkdown {
       }).then((json) => {
         const responseKey = this.options['responseKey'];
         const url = json[responseKey];
-        this.textarea.value = this.textarea.value.replace(text, `![${file.name}](${url})\n`);
+        if(this.options['imageableExtensions'].includes(fileType)) {
+          this.textarea.value = this.textarea.value.replace(text, `![${file.name}](${url})\n`);
+        } else {
+          this.textarea.value = this.textarea.value.replace(text, `[${file.name} (${fileSize})](${url})\n`);
+        }
         this.applyPreview();
       }).catch((error) => {
         this.textarea.value = this.textarea.value.replace(text, '');
