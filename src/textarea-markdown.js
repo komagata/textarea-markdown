@@ -15,6 +15,7 @@ export default class TextareaMarkdown {
         csrfToken: null,
         placeholder: "uploading %filename ...",
         imageableExtensions: ["jpeg", "png", "gif"],
+        videoExtensions: ["mov", "mp4", "webm"],
         afterPreview: () => {},
         plugins: [],
         markdownOptions: Object.assign({
@@ -141,6 +142,11 @@ export default class TextareaMarkdown {
             this.textarea.value = this.textarea.value.replace(
               text,
               `![${file.name}](${url})\n`
+            );
+          } else if (this.options["videoExtensions"].includes(fileType)) {
+            this.textarea.value = this.textarea.value.replace(
+              text,
+              `<video controls src="${url}"></video>\n`
             );
           } else {
             this.textarea.value = this.textarea.value.replace(
