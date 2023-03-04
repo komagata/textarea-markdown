@@ -1,6 +1,6 @@
 import "whatwg-fetch";
 import MarkdownIt from "markdown-it";
-import { filetypeextension } from "magic-bytes.js";
+import { detect } from "@komagata/filetype";
 import { filesize } from "filesize";
 
 export default class TextareaMarkdown {
@@ -102,7 +102,7 @@ export default class TextareaMarkdown {
     reader.readAsArrayBuffer(file);
     reader.onload = () => {
       const bytes = new Uint8Array(reader.result);
-      const fileType = filetypeextension(bytes)[0];
+      const fileType = detect(bytes);
       const fileSize = filesize(file.size, { base: 10, standard: "jedec" });
       const text =
         "![" +
