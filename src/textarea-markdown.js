@@ -30,12 +30,15 @@ export default class TextareaMarkdown {
     this.previews = [];
     this.setPreview();
     this.applyPreview();
+    this.inputelements = [];
+    this.setInputElement();
     if (this.options.useUploader) {
       textarea.addEventListener("dragover", (e) => e.preventDefault());
       textarea.addEventListener("drop", (e) => this.drop(e));
     }
     textarea.addEventListener("paste", (e) => this.paste(e));
     textarea.addEventListener("keyup", (e) => this.keyup(e));
+    this.inputelements.addEventListener("change", (e) => this.input(e));
   }
 
   setPreview() {
@@ -44,6 +47,13 @@ export default class TextareaMarkdown {
       Array.from(document.querySelectorAll(selector), (e) =>
         this.previews.push(e)
       );
+    }
+  }
+
+  setInputElement() {
+    const selector = this.textarea.getAttribute("data-input");
+    if (selector) {
+      this.inputelements = document.querySelector(selector);
     }
   }
 
@@ -57,6 +67,13 @@ export default class TextareaMarkdown {
     if (files.length > 0) {
       event.preventDefault();
       this.uploadAll(event.clipboardData.files);
+    }
+  }
+
+  input(event) {
+    const files = event.target.files;
+    if (files.length > 0) {
+      this.uploadAll(event.target.files);
     }
   }
 
