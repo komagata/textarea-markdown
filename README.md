@@ -56,3 +56,18 @@ document.addEventListener('DOMContentLoaded', () => {
 - default: true
 
 Enable uploading files on drop when the value is set to true
+
+#### Use File Selection Dialog
+
+```html
+<h2>Editor</h2>
+<textarea id="editor" data-preview="#preview" data-input="#input"></textarea>
+
+<input type="file" class="input">
+
+<h2>Preview</h2>
+<div id="preview"></div>
+```
+
+Please assign any desired selector to the input element.
+Add the `data-input` attribute to the textarea element and specify the selector held by the input element to use it.
