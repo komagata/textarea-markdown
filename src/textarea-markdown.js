@@ -1,6 +1,6 @@
 import "whatwg-fetch";
 import MarkdownIt from "markdown-it";
-import { detect } from "@komagata/filetype";
+import { fileTypeFromStream } from "file-type";
 import { filesize } from "filesize";
 
 export default class TextareaMarkdown {
@@ -100,9 +100,9 @@ export default class TextareaMarkdown {
   upload(file) {
     const reader = new FileReader();
     reader.readAsArrayBuffer(file);
-    reader.onload = () => {
+    reader.onload = async () => {
       const bytes = new Uint8Array(reader.result);
-      const fileType = detect(bytes);
+      const fileType = await fileTypeFromStream(bytes)["ext"];
       const fileSize = filesize(file.size, { base: 10, standard: "jedec" });
       const text =
         "![" +
