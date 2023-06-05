@@ -1,6 +1,6 @@
 import "whatwg-fetch";
 import MarkdownIt from "markdown-it";
-import { fileTypeFromStream } from "file-type";
+const FileType = require('file-type/browser');
 import { filesize } from "filesize";
 
 export default class TextareaMarkdown {
@@ -102,7 +102,7 @@ export default class TextareaMarkdown {
     reader.readAsArrayBuffer(file);
     reader.onload = async () => {
       const bytes = new Uint8Array(reader.result);
-      const fileType = await fileTypeFromStream(bytes)["ext"];
+      const fileType = await FileType.fromStream(bytes)["ext"];
       const fileSize = filesize(file.size, { base: 10, standard: "jedec" });
       const text =
         "![" +
