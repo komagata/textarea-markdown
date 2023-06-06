@@ -102,7 +102,7 @@ export default class TextareaMarkdown {
     reader.readAsArrayBuffer(file);
     reader.onload = async () => {
       const bytes = new Uint8Array(reader.result);
-      const fileType = await FileType.fromStream(bytes);
+      const fileType = await FileType.fromBuffer(bytes);
       const fileSize = filesize(file.size, { base: 10, standard: "jedec" });
       const text =
         "![" +
