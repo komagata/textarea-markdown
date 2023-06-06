@@ -14,7 +14,7 @@ export default class TextareaMarkdown {
         responseKey: "url",
         csrfToken: null,
         placeholder: "uploading %filename ...",
-        imageableExtensions: ["jpeg", "png", "gif"],
+        imageableExtensions: ["jpg", "png", "gif"],
         videoExtensions: ["mov", "mp4", "webm"],
         afterPreview: () => {},
         plugins: [],
