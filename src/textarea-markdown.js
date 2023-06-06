@@ -14,7 +14,7 @@ export default class TextareaMarkdown {
         responseKey: "url",
         csrfToken: null,
         placeholder: "uploading %filename ...",
-        imageableExtensions: ["jpeg", "png", "gif"],
+        imageableExtensions: ["jpg", "png", "gif"],
         videoExtensions: ["mov", "mp4", "webm"],
         afterPreview: () => {},
         plugins: [],
@@ -102,7 +102,7 @@ export default class TextareaMarkdown {
     reader.readAsArrayBuffer(file);
     reader.onload = async () => {
       const bytes = new Uint8Array(reader.result);
-      const fileType = await FileType.fromStream(bytes)["ext"];
+      const fileType = await FileType.fromBuffer(bytes);
       const fileSize = filesize(file.size, { base: 10, standard: "jedec" });
       const text =
         "![" +
@@ -138,12 +138,12 @@ export default class TextareaMarkdown {
         .then((json) => {
           const responseKey = this.options["responseKey"];
           const url = json[responseKey];
-          if (this.options["imageableExtensions"].includes(fileType)) {
+          if (this.options["imageableExtensions"].includes(fileType.ext)) {
             this.textarea.value = this.textarea.value.replace(
               text,
               `![${file.name}](${url})\n`
             );
-          } else if (this.options["videoExtensions"].includes(fileType)) {
+          } else if (this.options["videoExtensions"].includes(fileType.ext)) {
             this.textarea.value = this.textarea.value.replace(
               text,
               `<video controls src="${url}"></video>\n`
