@@ -38,6 +38,7 @@ export default class TextareaMarkdown {
     }
     textarea.addEventListener("paste", (e) => this.paste(e));
     textarea.addEventListener("keyup", (e) => this.keyup(e));
+    this.inputelements.addEventListener('click', (e) => e.target.value = '');
     this.inputelements.addEventListener("change", (e) => this.input(e));
   }
 
