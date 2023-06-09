@@ -52,7 +52,7 @@ export default class TextareaMarkdown {
   }
 
   setInputElement() {
-    const selector = this.textarea.getAttribute("file-input");
+    const selector = this.textarea.getAttribute("data-input");
     if (selector) {
       this.inputelements = document.querySelector(selector);
     }
