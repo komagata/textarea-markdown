@@ -1,6 +1,6 @@
 import "whatwg-fetch";
 import MarkdownIt from "markdown-it";
-const FileType = require('file-type/browser');
+const FileType = require("file-type/browser");
 import { filesize } from "filesize";
 
 export default class TextareaMarkdown {
@@ -38,7 +38,7 @@ export default class TextareaMarkdown {
     textarea.addEventListener("paste", (e) => this.paste(e));
     textarea.addEventListener("keyup", (e) => this.keyup(e));
     if (inputelement) {
-      inputelement.addEventListener('click', (e) => e.target.value = '');
+      inputelement.addEventListener("click", (e) => e.target.value = "");
       inputelement.addEventListener("change", (e) => this.input(e));
     }
   }
