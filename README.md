@@ -21,7 +21,7 @@ $ npm install textarea-markdown
 ```javascript
 import TextareaMarkdown from 'textarea-markdown'
 
-let textarea = document.querySelector("textarea");
+let textarea = document.querySelector('textarea');
 new TextareaMarkdown(textarea);
 ```
 
@@ -56,3 +56,22 @@ document.addEventListener('DOMContentLoaded', () => {
 - default: true
 
 Enable uploading files on drop when the value is set to true
+
+#### file upload by file selection dialog
+Enable uploading files by file selection dialog when using `<input>` as in the following code
+
+```html
+<h2>Editor & File input</h2>
+<input type="file" class="data-input">
+<textarea id="editor" data-preview="#preview" data-input=".input"></textarea>
+
+<h2>Preview</h2>
+<div id="preview"></div>
+```
+
+```javascript
+import TextareaMarkdown from 'textarea-markdown'
+
+let textarea = document.querySelector('textarea');
+new TextareaMarkdown(textarea);
+```
