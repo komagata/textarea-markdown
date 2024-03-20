@@ -18,6 +18,9 @@ export default class TextareaMarkdown {
         videoExtensions: ["mov", "mp4", "webm"],
         afterPreview: () => {},
         plugins: [],
+        uploadImageTag: "![%filename](%url)\n",
+        uploadVideoTag: '<video controls src="%url"></video>\n',
+        uploadOtherTag: "[%filename (%fileSize)](%url)\n",
         markdownOptions: Object.assign({
           html: true,
           breaks: true,
@@ -38,7 +41,7 @@ export default class TextareaMarkdown {
     textarea.addEventListener("paste", (e) => this.paste(e));
     textarea.addEventListener("keyup", (e) => this.keyup(e));
     if (inputelement) {
-      inputelement.addEventListener("click", (e) => e.target.value = "");
+      inputelement.addEventListener("click", (e) => (e.target.value = ""));
       inputelement.addEventListener("change", (e) => this.input(e));
     }
   }
@@ -125,7 +128,7 @@ export default class TextareaMarkdown {
       const fileSize = filesize(file.size, { base: 10, standard: "jedec" });
       const text =
         "![" +
-        this.options["placeholder"].replace(/\%filename/, file.name) +
+        this.options["placeholder"].replace(/filename/, file.name) +
         "]()";
 
       const beforeRange = this.textarea.selectionStart;
@@ -155,24 +158,12 @@ export default class TextareaMarkdown {
           return response.json();
         })
         .then((json) => {
-          const responseKey = this.options["responseKey"];
+          const responseKey = this.options.responseKey;
           const url = json[responseKey];
-          if (this.options["imageableExtensions"].includes(fileType.ext)) {
-            this.textarea.value = this.textarea.value.replace(
-              text,
-              `![${file.name}](${url})\n`
-            );
-          } else if (this.options["videoExtensions"].includes(fileType.ext)) {
-            this.textarea.value = this.textarea.value.replace(
-              text,
-              `<video controls src="${url}"></video>\n`
-            );
-          } else {
-            this.textarea.value = this.textarea.value.replace(
-              text,
-              `[${file.name} (${fileSize})](${url})\n`
-            );
-          }
+          const placeholderTag = this.selectPlaceholderTag(fileType);
+          const uploadTag = this.replacePlaceholderTag(placeholderTag, file.name, fileSize, url);
+
+          this.textarea.value = this.textarea.value.replace(text, uploadTag);
           this.applyPreview();
         })
         .catch((error) => {
@@ -180,5 +171,23 @@ export default class TextareaMarkdown {
           console.warn("parsing failed", error);
         });
     };
+  }
+
+  selectPlaceholderTag(fileType) {
+    if (this.options.imageableExtensions.includes(fileType.ext)) {
+      return this.options.uploadImageTag;
+    } else if (this.options.videoExtensions.includes(fileType.ext)) {
+      return this.options.uploadVideoTag;
+    } else {
+      return this.options.uploadOtherTag;
+    }
+  }
+
+  replacePlaceholderTag(placeholderTag, filename, fileSize, url) {
+    if (placeholderTag !== this.options.uploadOtherTag) {
+      return placeholderTag.replace(/%filename/, filename).replace(/%url/, url);
+    }else{
+      return placeholderTag.replace(/%filename/, filename).replace(/%url/, url).replace(/%fileSize/, fileSize);
+    }
   }
 }
