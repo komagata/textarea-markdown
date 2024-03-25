@@ -44,7 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
     paramName: 'file',
     responseKey: 'url',
     csrfToken: token,
-    placeholder: 'uploading %filename ...'
+    placeholder: 'uploading %filename ...',
+    uploadImageTag: '<img src=%url width="100" height="100" alt="%filename">\n',
   })
 });
 ```
