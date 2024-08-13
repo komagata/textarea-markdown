@@ -1,6 +1,6 @@
 {
   "name": "textarea-markdown",
-  "version": "1.5.2",
+  "version": "1.6.0",
   "description": "Make textarea a markdown editor.",
   "main": "lib/textarea-markdown.js",
   "scripts": {
@@ -13,7 +13,10 @@
     "markdown"
   ],
   "author": "Masaki Komagata",
-  "repository": "github:komagata/textarea-markdown",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/komagata/textarea-markdown.git"
+  },
   "license": "ISC",
   "dependencies": {
     "file-type": "^16.5.4",
