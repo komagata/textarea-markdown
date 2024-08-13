@@ -1,6 +1,6 @@
 {
   "name": "textarea-markdown",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "Make textarea a markdown editor.",
   "main": "lib/textarea-markdown.js",
   "scripts": {

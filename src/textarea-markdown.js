@@ -115,11 +115,13 @@ export default class TextareaMarkdown {
 
   uploadToOriginal() {}
 
-  uploadAll(files) {
-    Array.from(files, (f) => this.upload(f));
+  async uploadAll(files) {
+    for (const file of files) {
+      await this.upload(file);
+    }
   }
 
-  upload(file) {
+  async upload(file) {
     const reader = new FileReader();
     reader.readAsArrayBuffer(file);
     reader.onload = async () => {
@@ -148,28 +150,31 @@ export default class TextareaMarkdown {
         headers["X-CSRF-Token"] = this.options["csrfToken"];
       }
 
-      fetch(this.options["endPoint"], {
-        method: "POST",
-        headers: headers,
-        credentials: "same-origin",
-        body: params,
-      })
-        .then((response) => {
-          return response.json();
-        })
-        .then((json) => {
-          const responseKey = this.options.responseKey;
-          const url = json[responseKey];
-          const placeholderTag = this.selectPlaceholderTag(fileType);
-          const uploadTag = this.replacePlaceholderTag(placeholderTag, file.name, fileSize, url);
-
-          this.textarea.value = this.textarea.value.replace(text, uploadTag);
-          this.applyPreview();
-        })
-        .catch((error) => {
-          this.textarea.value = this.textarea.value.replace(text, "");
-          console.warn("parsing failed", error);
+      try {
+        const response = await fetch(this.options["endPoint"], {
+          method: "POST",
+          headers: headers,
+          credentials: "same-origin",
+          body: params,
         });
+        const json = await response.json();
+        const responseKey = this.options.responseKey;
+        const url = json[responseKey];
+        const placeholderTag = this.selectPlaceholderTag(fileType);
+
+        const uploadTag = await this.replacePlaceholderTag(
+          placeholderTag,
+          file.name,
+          fileSize,
+          url
+        );
+
+        this.textarea.value = this.textarea.value.replace(text, uploadTag);
+        this.applyPreview();
+      } catch (error) {
+        this.textarea.value = this.textarea.value.replace(text, "");
+        console.warn("parsing failed", error);
+      }
     };
   }
 
@@ -183,11 +188,33 @@ export default class TextareaMarkdown {
     }
   }
 
-  replacePlaceholderTag(placeholderTag, filename, fileSize, url) {
-    if (placeholderTag !== this.options.uploadOtherTag) {
-      return placeholderTag.replace(/%filename/, filename).replace(/%url/, url);
-    }else{
-      return placeholderTag.replace(/%filename/, filename).replace(/%url/, url).replace(/%fileSize/, fileSize);
+  async replacePlaceholderTag(placeholderTag, filename, fileSize, url) {
+    const commonPlaceholderTag = placeholderTag
+      .replace(/%filename/, filename)
+      .replace(/%url/, url);
+
+    if (placeholderTag === this.options.uploadImageTag) {
+      const dimensions = await this.fetchImageDimensions(url);
+      return commonPlaceholderTag
+        .replace(/%width/, dimensions.width)
+        .replace(/%height/, dimensions.height);
+    } else if (placeholderTag === this.options.uploadVideoTag) {
+      return commonPlaceholderTag;
+    } else {
+      return commonPlaceholderTag.replace(/%fileSize/, fileSize);
     }
+  }
+
+  fetchImageDimensions(url) {
+    return new Promise((resolve, reject) => {
+      const image = new Image();
+      image.onload = () => {
+        resolve({ width: image.width, height: image.height });
+      };
+      image.onerror = (error) => {
+        reject(error);
+      };
+      image.src = url;
+    });
   }
 }
