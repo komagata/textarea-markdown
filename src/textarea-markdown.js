@@ -190,18 +190,18 @@ export default class TextareaMarkdown {
 
   async replacePlaceholderTag(placeholderTag, filename, fileSize, url) {
     const commonPlaceholderTag = placeholderTag
-      .replace(/%filename/, filename)
-      .replace(/%url/, url);
+      .replace(/%filename/g, filename)
+      .replace(/%url/g, url);
 
     if (placeholderTag === this.options.uploadImageTag) {
       const dimensions = await this.fetchImageDimensions(url);
       return commonPlaceholderTag
-        .replace(/%width/, dimensions.width)
-        .replace(/%height/, dimensions.height);
+        .replace(/%width/g, dimensions.width)
+        .replace(/%height/g, dimensions.height);
     } else if (placeholderTag === this.options.uploadVideoTag) {
       return commonPlaceholderTag;
     } else {
-      return commonPlaceholderTag.replace(/%fileSize/, fileSize);
+      return commonPlaceholderTag.replace(/%fileSize/g, fileSize);
     }
   }
 
