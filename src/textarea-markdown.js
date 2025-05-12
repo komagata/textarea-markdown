@@ -102,13 +102,18 @@ export default class TextareaMarkdown {
   applyPreview() {
     const markdownOptions = this.options["markdownOptions"];
     const plugins = this.options["plugins"];
-    if (this.previews) {
-      this.previews.forEach((preview) => {
-        let md = new MarkdownIt(markdownOptions);
-        plugins.forEach((plugin) => md.use(plugin));
-        preview.innerHTML = md.render(this.textarea.value);
+    this.previews.forEach((preview) => {
+      let md = new MarkdownIt(markdownOptions);
+      plugins.forEach((pluginEntry) => {
+        if (Array.isArray(pluginEntry)) {
+          const [plugin, ...pluginArgs] = pluginEntry;
+          md.use(plugin, ...pluginArgs);
+        } else {
+          md.use(pluginEntry);
+        }
       });
-    }
+      preview.innerHTML = md.render(this.textarea.value);
+    });
 
     this.options["afterPreview"]();
   }

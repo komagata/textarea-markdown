@@ -76,3 +76,27 @@ import TextareaMarkdown from 'textarea-markdown'
 let textarea = document.querySelector('textarea');
 new TextareaMarkdown(textarea);
 ```
+
+#### plugins
+- type: Array
+- default: []
+
+An array of Markdown-It plugins to apply.  
+Each plugin can be either:
+- a function (plugin)
+- or an array like `[plugin, option1, option2, ...]`
+
+**Example**
+
+```javascript
+import TextareaMarkdown from 'textarea-markdown'
+import markdownItEmoji from 'markdown-it-emoji'
+import markdownItSub from 'markdown-it-sub'
+
+new TextareaMarkdown(textarea, {
+  plugins: [
+    markdownItEmoji,
+    [markdownItSub, { delimiter: '~' }]
+  ]
+})
+```
