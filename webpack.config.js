@@ -12,5 +12,10 @@ module.exports = {
          directory: path.resolve(__dirname, "example"),
          watch: true
       }
+   },
+   resolve: {
+      fallback: {
+         buffer: require.resolve('buffer')
+      }
    }
 };
