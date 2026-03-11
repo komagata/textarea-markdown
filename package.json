@@ -19,7 +19,7 @@
   },
   "license": "ISC",
   "dependencies": {
-    "file-type": "^16.5.4",
+    "file-type": "^21.3.1",
     "filesize": "^10.0.5",
     "markdown-it": "^12.3.2",
     "whatwg-fetch": "^2.0.3"
